@@ -1,11 +1,9 @@
-from dataclasses import dataclass, field
-from typing import List, Optional, Dict
-from enum import Enum
-from enums import ID, CraftingSkill 
+from dataclasses import dataclass
+from typing import List, Dict
+from enums import EID, ECraftingSkill 
 from vrange import Range
 from items import ItemIDs
-import json
-import math
+
 
 @dataclass
 class ConsumableIDs:
@@ -26,9 +24,9 @@ class Ingredient:
     name: str
     #type: str
     lvl: int
-    skills: List[CraftingSkill]
+    skills: List[ECraftingSkill]
     #icon: None
-    ids: Dict[ID, Range] #TODO rewrite as dict 
+    ids: Dict[EID, Range]
     tier: int
     consumableIDs: ConsumableIDs
     posMods: PosMods
@@ -66,12 +64,12 @@ class Ingredient:
         return Range(min = srange["minimum"], max = srange["maximum"])
 
     @classmethod
-    def parse_skills(cls, skills: List[str]) -> List[CraftingSkill]:
-        return [CraftingSkill(skill) for skill in skills]
+    def parse_skills(cls, skills: List[str]) -> List[ECraftingSkill]:
+        return [ECraftingSkill(skill) for skill in skills]
 
     @classmethod
-    def parse_ids(cls, ids: dict) -> Dict[ID, Range]:
-        return {ID(id): cls.parse_range(ids[id]) for id in ids}
+    def parse_ids(cls, ids: dict) -> Dict[EID, Range]:
+        return {EID(id): cls.parse_range(ids[id]) for id in ids}
 
     @classmethod
     def parse_consumableIDs(cls, consumableIDs: dict) -> ConsumableIDs:

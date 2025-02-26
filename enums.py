@@ -1,6 +1,6 @@
 from enum import Enum
 
-class ID(Enum):
+class EID(Enum):
     MELEEDAMAGERAW = "mdRaw" #Expelled Shrapnel
     HEALTHBONUS = "hpBonus" #Expelled Shrapnel
     AGILITY = "agi" #Gruesome Carnassial
@@ -103,7 +103,7 @@ class ID(Enum):
     HEALTHPOINTS = "hp" #Statue
     MAINATTACKFIREDAMAGE = "mainAttackFireDamage" #Flamiche ???
 
-class AttackSpeed(Enum):
+class EAttackSpeed(Enum):
     SUPER_FAST = 6
     VERY_FAST = 5
     FAST = 4
@@ -112,7 +112,7 @@ class AttackSpeed(Enum):
     VERY_SLOW = 1
     SUPER_SLOW = 0
 
-class ItemTier(Enum):
+class EItemTier(Enum):
     MYTHIC = 6
     FABLED = 5
     LEGENDARY = 4
@@ -121,12 +121,12 @@ class ItemTier(Enum):
     UNIQUE = 1
     NORMAL = 0
 
-class ItemRestrict(Enum):
+class EItemRestrict(Enum):
     QUESTITEM = "Quest Item"
     UNTRADABLE = "Untradable"
     ALLOWCRAFTSMAN = "Allow Craftsman"
 
-class ItemType(Enum):
+class EItemType(Enum):
     BOOTS = "BOOTS"
     BOW = "BOW"
     BRACELET = "BRACELET"
@@ -241,7 +241,7 @@ class EMaterial(Enum):
     REFINEDDERNICMEAT = "Refined Dernic Meat"
     REFINEDDERNICGRAINS = "Refined Dernic Grains"
 
-class CraftingSkill(Enum):
+class ECraftingSkill(Enum):
     SCRIBING = "SCRIBING"
     JEWELING = "JEWELING"
     ALCHEMISM = "ALCHEMISM"

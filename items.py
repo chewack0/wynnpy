@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 from typing import List, Optional, Dict
-from enums import ID, AttackSpeed, ItemTier, ItemRestrict, ItemType
+from enums import EID, EAttackSpeed, EItemTier, EItemRestrict, EItemType
 from typing import Optional, Dict
 from vrange import Range
-import json
 
 @dataclass
 class ItemIDs:
@@ -26,16 +25,16 @@ class Damage:
 @dataclass
 class Item:
     name: str
-    item: ItemType
+    item: EItemType
     damage: Optional[Damage]
     itemIDs: ItemIDs
-    atkSpd: Optional[AttackSpeed] #Enum
+    atkSpd: Optional[EAttackSpeed] 
     lvl: int
-    ids: Dict[ID, Range] #ID - Enum
-    tier: ItemTier #Enum
+    ids: Dict[EID, Range] 
+    tier: EItemTier 
     powderSlots: Optional[int]
     displayName: str
-    restrict: List[ItemRestrict] #Enum
+    restrict: List[EItemRestrict]
     majorIDs: Optional[str]
     id: int
 
@@ -70,13 +69,13 @@ class Item:
 
     #...?
     @classmethod
-    def parse_ids(cls, data: dict) -> Dict[ID, Range]:
+    def parse_ids(cls, data: dict) -> Dict[EID, Range]:
         parsed_ids = {}
         fixed_keys = {"agi", "str", "dex", "int", "def"}
         reversed_keys = { "spPct1", "spPct2", "spPct3", "spPct4", "spRaw1", "spRaw2", "spRaw3", "spRaw4"}
 
         for key, value in data.items():
-            for id_enum in ID:
+            for id_enum in EID:
                 if id_enum.value == key:
                     if data.get("fixID"):
                         parsed_ids[id_enum] = Range(value, value)
@@ -97,7 +96,7 @@ class Item:
 
     @classmethod
     def fing_missing_keys(cls, data: dict):
-        existing_keys = {id_enum.value for id_enum in ID}
+        existing_keys = {id_enum.value for id_enum in EID}
         exclude_keys = {"icon", "lvl", "armourMaterial", "name", "id", "slots", "atkSpd", "tier", "lore", "drop", "majorIds", "nDam", "fDam", "displayName", "restrict", "quest",
                         "allowCraftsman", "agiReq", "aDam", "tDam", "wDam", "dexReq", "eDam", "intReq", "strReq", "type", "classReq", "averageDps", "armourColor", "category",
                         "defReq", "dropInfo", "fixID"}
@@ -115,21 +114,21 @@ class Item:
     def parse_item(cls, data: dict) -> 'Item':
         restricts = []
         if "restirct" in data and data["restirct"].lower() == "untredable":
-            restricts.append(ItemRestrict.UNTRADABLE)
+            restricts.append(EItemRestrict.UNTRADABLE)
         if "quest" in data:
-            restricts.append(ItemRestrict.QUESTITEM)
+            restricts.append(EItemRestrict.QUESTITEM)
         if "allowCraftsman" in data and data["allowCraftsman"]:
-            restricts.append(ItemRestrict.ALLOWCRAFTSMAN)
+            restricts.append(EItemRestrict.ALLOWCRAFTSMAN)
 
         return Item(
             name = data["name"],
             item = data["type"].upper(),
             damage = cls.parse_damage(data),
             itemIDs = cls.parse_itemids(data), 
-            atkSpd = AttackSpeed[data["atkSpd"].upper()] if "atckSpd" in data else None,
+            atkSpd = EAttackSpeed[data["atkSpd"].upper()] if "atckSpd" in data else None,
             lvl = data["lvl"],
             ids = cls.parse_ids(data),
-            tier = ItemTier[data["tier"].upper()],
+            tier = EItemTier[data["tier"].upper()],
             powderSlots = data.get("slots", 0),
             displayName = data["name"],
             restrict = restricts,

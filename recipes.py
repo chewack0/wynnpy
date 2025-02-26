@@ -1,8 +1,7 @@
-from dataclasses import dataclass, field
-from typing import List, Optional, Dict, TypedDict
-from enums import CraftingSkill, EMaterial, ItemType
+from dataclasses import dataclass
+from typing import List, Optional
+from enums import ECraftingSkill, EMaterial, EItemType
 from vrange import Range
-import json
 
 @dataclass
 class Material():
@@ -11,8 +10,8 @@ class Material():
 
 @dataclass
 class Recipe:
-    item: ItemType
-    skill: CraftingSkill
+    item: EItemType
+    skill: ECraftingSkill
     materials: List[Material]
     healthOrDamage: Range
     durability: Optional[Range]
