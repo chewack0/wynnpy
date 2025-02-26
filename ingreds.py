@@ -34,6 +34,9 @@ class Ingredient:
     displayName: str
     id: int
     
+    def __hash__(self):
+        return hash((self.__class__.__name__, self.id))
+
     @classmethod
     def parse_ing(cls, obj: dict) -> 'Ingredient':
         

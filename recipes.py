@@ -21,6 +21,9 @@ class Recipe:
     name: str
     id: int
 
+    def __hash__(self):
+        return hash((self.__class__.__name__, self.id))
+
     @classmethod
     def parse_recipe(cls, obj: dict) -> 'Recipe':
         item = obj["type"]
