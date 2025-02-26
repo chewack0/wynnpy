@@ -84,14 +84,14 @@ class Item:
                         parsed_ids[id_enum] = Range(value, value)
                     elif key in reversed_keys:
                         if value <= 0:
-                            parsed_ids[id_enum] = Range(value*0.3, value*1.3)
+                            parsed_ids[id_enum] = Range(value*0.3, value*1.3).round()
                         else:
-                            parsed_ids[id_enum] = Range(value*1.3, value*0.7)
+                            parsed_ids[id_enum] = Range(value*1.3, value*0.7).round()
                     else:
                         if value >= 0:
-                            parsed_ids[id_enum] = Range(value*0.3, value*1.3)
+                            parsed_ids[id_enum] = Range(value*0.3, value*1.3).round()
                         else:
-                            parsed_ids[id_enum] = Range(value*1.3, value*0.7)
+                            parsed_ids[id_enum] = Range(value*1.3, value*0.7).round()
 
         return parsed_ids 
 

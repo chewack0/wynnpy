@@ -46,3 +46,9 @@ class Range:
     
     def floor(self):
         return Range(math.floor(self.min), math.floor(self.max))
+    
+    def contains(self, x: int | float):
+        return x >= self.min and x <= self.max
+
+    def round(self):
+        return Range(round(self.min), round(self.max))
