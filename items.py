@@ -68,17 +68,30 @@ class Item:
             agiReq = data.get("agiReq", 0)
         )
 
+    #...?
     @classmethod
     def parse_ids(cls, data: dict) -> Dict[ID, Range]:
         parsed_ids = {}
+        fixed_keys = {"agi", "str", "dex", "int", "def"}
+        reversed_keys = { "spPct1", "spPct2", "spPct3", "spPct4", "spRaw1", "spRaw2", "spRaw3", "spRaw4"}
 
         for key, value in data.items():
             for id_enum in ID:
                 if id_enum.value == key:
-                    if value >= 0:
-                        parsed_ids[id_enum] = Range(value*0.3, value*1.3)
+                    if data.get("fixID"):
+                        parsed_ids[id_enum] = Range(value, value)
+                    elif key in fixed_keys:
+                        parsed_ids[id_enum] = Range(value, value)
+                    elif key in reversed_keys:
+                        if value <= 0:
+                            parsed_ids[id_enum] = Range(value*0.3, value*1.3)
+                        else:
+                            parsed_ids[id_enum] = Range(value*1.3, value*0.7)
                     else:
-                        parsed_ids[id_enum] = Range(value*1.3, value*0.7)
+                        if value >= 0:
+                            parsed_ids[id_enum] = Range(value*0.3, value*1.3)
+                        else:
+                            parsed_ids[id_enum] = Range(value*1.3, value*0.7)
 
         return parsed_ids 
 
