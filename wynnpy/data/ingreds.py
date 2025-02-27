@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List, Dict
-from data.enums import EID, ECraftingSkill 
-from data.vrange import Range
-from data.items import ItemIDs
+from .enums import EID, ECraftingSkill 
+from .vrange import Range
+from .items import ItemIDs
 import logging 
 
 @dataclass
