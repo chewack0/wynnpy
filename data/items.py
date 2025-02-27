@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List, Optional, Dict
-from enums import EID, EAttackSpeed, EItemTier, EItemRestrict, EItemType
+from data.enums import EID, EAttackSpeed, EItemTier, EItemRestrict, EItemType
 from typing import Optional, Dict
-from vrange import Range
+from data.vrange import Range
 
 @dataclass
 class ItemIDs:

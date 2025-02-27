@@ -1,7 +1,7 @@
 from typing import List, Union
-from ingreds import Ingredient
-from items import Item
-from recipes import Recipe
+from data.ingreds import Ingredient
+from data.items import Item
+from data.recipes import Recipe
 from abc import ABC, abstractmethod
 import logging
 from utils.fuzzy import fuzzy_match

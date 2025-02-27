@@ -1,9 +1,9 @@
 import json
 from typing import List
 import logging 
-from items import Item
-from ingreds import Ingredient
-from recipes import Recipe
+from data.items import Item
+from data.ingreds import Ingredient
+from data.recipes import Recipe
 
 def parse_items(path: str) -> List[Item]:
     items = list()
