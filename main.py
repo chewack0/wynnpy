@@ -1,5 +1,5 @@
-from datacontainer import ItemsContainer, IngredientsContainer, RecipeContainer, MainDataContainer
-import parse
+from data.datacontainer import ItemsContainer, IngredientsContainer, RecipeContainer, MainDataContainer
+from data import parse
 import logger
 import logging
 
