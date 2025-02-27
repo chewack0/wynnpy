@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
-from data.enums import ECraftingSkill, EMaterial, EItemType
-from data.vrange import Range
+from .enums import ECraftingSkill, EMaterial, EItemType
+from .vrange import Range
 
 @dataclass
 class Material():
