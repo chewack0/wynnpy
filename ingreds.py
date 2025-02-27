@@ -3,7 +3,7 @@ from typing import List, Dict
 from enums import EID, ECraftingSkill 
 from vrange import Range
 from items import ItemIDs
-
+import logging 
 
 @dataclass
 class ConsumableIDs:

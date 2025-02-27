@@ -1,6 +1,6 @@
 import json
 from typing import List
-
+import logging 
 from items import Item
 from ingreds import Ingredient
 from recipes import Recipe
@@ -9,8 +9,11 @@ def parse_items(path: str) -> List[Item]:
     items = list()
     with open(path) as data:
         data = json.load(data)["items"]
+        counter = 1
         for item in data:
+            logging.info(f"[{counter}] Parsing item... {item["name"]}  id: {item["id"]}")
             items.append(Item.parse_item(item))
+            counter += 1
     return items
 
 def parse_ingredients(path: str) -> List[Ingredient]:
@@ -19,7 +22,7 @@ def parse_ingredients(path: str) -> List[Ingredient]:
         data = json.load(data)
         counter = 1
         for ing in data:
-            print(f"[{counter}]Parsing... {ing["name"]}")
+            logging.info(f"[{counter}] Parsing ingredient... {ing["name"]} id: {ing["id"]}")
             ingredients.append(Ingredient.parse_ing(ing))
             counter += 1
     return ingredients
@@ -30,7 +33,7 @@ def parse_recipes(path: str) -> List[Recipe]:
         data = json.load(data)
         counter = 1
         for recipe in data["recipes"]:
-            print(f"[{counter}]Parsing... {recipe["name"]}")
+            logging.info(f"[{counter}] Parsing recipe... {recipe["name"]}  id: {recipe["id"]}")
             recipes.append(Recipe.parse_recipe(recipe))
             counter += 1
         return recipes
