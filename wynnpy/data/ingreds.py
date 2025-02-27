@@ -97,7 +97,10 @@ class Ingredient:
                     defReq = itemIDs["defReq"],
                     agiReq = itemIDs["agiReq"])
 
-
+    def validate_skill(self, skill: ECraftingSkill):
+        if skill in self.skills:
+            return True
+        return False
 
 if __name__ == "__main__":
     pass
