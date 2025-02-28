@@ -13,6 +13,7 @@ class Grid:
     def __init__(self, skill: ECraftingSkill, *ingreds: Optional[Ingredient]):
         
         self.skill = skill
+        self.itemIDs = ItemIDs(0, 0, 0, 0, 0, 0)
         for ing in ingreds:
             if not ing.validate_skill(self.skill):
                 logging.warning(f"Hey, something is wrong with crafting skill, you can't use {ing.name}({', '.join(str(skill.value) for skill in ing.skills)}) in this recipe ({self.skill.value})")
@@ -29,8 +30,10 @@ class Grid:
         self.posModsGrid = [[100 for i in range(len(self.ingredients[0]))] for j in range(len(self.ingredients))]
         self.ids = dict()
 
+
+
     def eval(self):
-        return self.evalPosMods().evalIDs()
+        return self.evalPosMods().evalIDs().evalItemIDs()
     
     def evalIDs(self):
         for i in range(len(self.ingredients)):
@@ -49,6 +52,12 @@ class Grid:
                     self.posModsGrid = self.calculatePosMods(self.ingredients[i][j].posMods, [i, j], self.posModsGrid)
                 else:
                     pass
+        return self
+
+    def evalItemIDs(self):
+        for i in range(len(self.ingredients)):
+            for j in range(len(self.ingredients[i])):
+                self.itemIDs += (self.ingredients[i][j].itemIDs * (self.posModsGrid[i][j] / 100)).floor()
         return self
 
     @staticmethod
