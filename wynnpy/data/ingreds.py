@@ -97,6 +97,23 @@ class Ingredient:
                     defReq = itemIDs["defReq"],
                     agiReq = itemIDs["agiReq"])
 
+    def validate_skill(self, skill: ECraftingSkill):
+        if skill in self.skills:
+            return True
+        return False
+
+    @staticmethod
+    def empty() -> 'Ingredient':
+        return Ingredient(name = "Empty",
+                          lvl = 0,
+                          ids = {},
+                          consumableIDs = ConsumableIDs(durability=0, charges=0),
+                          skills = [],
+                          tier = 0,
+                          posMods = PosMods(0, 0, 0, 0, 0, 0),
+                          itemIDs = ItemIDs(0, 0, 0, 0, 0, 0),
+                          displayName = "Empty",
+                          id = -1)
 
 
 if __name__ == "__main__":
