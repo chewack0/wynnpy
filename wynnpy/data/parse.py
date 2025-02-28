@@ -54,7 +54,7 @@ class ItemFactory:
             item = data["type"].upper(),
             itemIDs = cls.parse_itemids(data), 
             lvl = data["lvl"],
-            hp = data.get("hp", 0),
+            hp = Range.fromint(data.get("hp", 0)),
             ids = cls.parse_ids(data),
             tier = EItemTier[data["tier"].upper()],
             powderSlots = data.get("slots", 0),

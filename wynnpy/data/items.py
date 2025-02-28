@@ -72,7 +72,7 @@ class Weapon(Item):
 
 @dataclass
 class Armor(Item):
-    hp: int
+    hp: Range
     powderSlots: Optional[int]
     
     def __hash__(self):
