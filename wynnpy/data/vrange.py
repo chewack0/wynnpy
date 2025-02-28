@@ -6,9 +6,14 @@ class Range:
     min: int | float
     max: int | float
 
+    @classmethod
+    def fromint(cls, number: int) -> 'Range':
+        return Range(number, number)
+
     def add(self, vrange: 'Range'):
         self.min += vrange.min
         self.max += vrange.max
+        return self
     
     def __add__(self, other) -> 'Range':
         if isinstance(other, Range):
