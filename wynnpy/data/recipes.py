@@ -43,7 +43,7 @@ class Recipe:
         id = obj["id"]
 
         return Recipe(item = item,
-                    skill = skill,
+                    skill = ECraftingSkill(skill),
                     materials = materials,
                     healthOrDamage = healthOrDamage,
                     durability = durability,
