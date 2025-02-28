@@ -1,13 +1,22 @@
-from wynnpy.data.ingreds import Ingredient, EID, Range, ItemIDs, PosMods
+from wynnpy.data.ingreds import Ingredient, EID, Range, ItemIDs, PosMods, ECraftingSkill
 from typing import Optional, List, Dict
+import logging 
+
+
 
 class Grid:
     
+    skill: ECraftingSkill
     ids: Dict[EID, Range]
     itemIDs: ItemIDs
 
-    def __init__(self, *ingreds: Optional[Ingredient]):
-         
+    def __init__(self, skill: ECraftingSkill, *ingreds: Optional[Ingredient]):
+        
+        self.skill = skill
+        for ing in ingreds:
+            if not ing.validate_skill(self.skill):
+                logging.warning(f"Hey, something is wrong with crafting skill, you can't use {ing.name}({', '.join(str(skill.value) for skill in ing.skills)}) in this recipe ({self.skill.value})")
+
         if len(ingreds) == 6:
             self.ingredients = [[ingreds[0], ingreds[1]],
                                 [ingreds[2], ingreds[3]],
@@ -21,7 +30,7 @@ class Grid:
         self.ids = dict()
 
     def eval(self):
-        pass
+        return self.evalPosMods().evalIDs()
     
     def evalIDs(self):
         for i in range(len(self.ingredients)):
@@ -31,6 +40,7 @@ class Grid:
                         self.ids[id[0]] += (id[1] * (self.posModsGrid[i][j] / 100)).floor()
                     else:
                         self.ids[id[0]] = (id[1] * (self.posModsGrid[i][j] / 100)).floor()
+        return self
 
     def evalPosMods(self):
         for i in range(len(self.ingredients)):
@@ -39,7 +49,8 @@ class Grid:
                     self.posModsGrid = self.calculatePosMods(self.ingredients[i][j].posMods, [i, j], self.posModsGrid)
                 else:
                     pass
-    
+        return self
+
     @staticmethod
     def calculatePosMods(posmods: PosMods, position: List[int], board: List[List]) -> List:
         y0, x0 = position

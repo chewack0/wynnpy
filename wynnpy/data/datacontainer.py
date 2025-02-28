@@ -16,14 +16,11 @@ class DataContainer(ABC):
 
 
     def add(self, object):
-        if type(object) != self.itemsType:
-            logging.warning(f"The object ({type(object)}) is not of type {self.itemsType}")
-        else:
-            try:
-                hash(object)
-                self.objects.add(object)
-            except TypeError:
-                logging.warning(f"The object of type {type(object)} is not hashable")
+        try:
+            hash(object)
+            self.objects.add(object)
+        except TypeError:
+            logging.warning(f"The object of type {type(object)} is not hashable")
             
 
     def remove(self, object):

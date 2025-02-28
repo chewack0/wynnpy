@@ -250,3 +250,8 @@ class ECraftingSkill(Enum):
     WEAPONSMITHING = "WEAPONSMITHING"
     TAILORING = "TAILORING"
     ARMOURING = "ARMOURING"
+
+class EItemCategory(Enum):
+    WEAPON = "weapon"
+    ARMOR = "armor"
+    ACCESSORY = "accessory"
