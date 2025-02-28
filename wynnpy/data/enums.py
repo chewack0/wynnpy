@@ -113,6 +113,7 @@ class EAttackSpeed(Enum):
     SUPER_SLOW = 0
 
 class EItemTier(Enum):
+    CRAFTED = 7
     MYTHIC = 6
     FABLED = 5
     LEGENDARY = 4
