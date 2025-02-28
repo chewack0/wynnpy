@@ -3,6 +3,7 @@ from typing import List, Optional, Dict
 from .enums import EID, EAttackSpeed, EItemTier, EItemRestrict, EItemType, EItemCategory
 from typing import Optional, Dict
 from .vrange import Range
+import math
 
 @dataclass
 class ItemIDs:
@@ -12,6 +13,66 @@ class ItemIDs:
     intReq: int
     defReq: int
     agiReq: int
+
+    def __add__(self, other: 'ItemIDs'):
+        if isinstance(other, ItemIDs):
+            return ItemIDs(self.durability + other.durability,
+                        self.strReq + other.strReq,
+                        self.dexReq + other.dexReq,
+                        self.intReq + other.intReq,
+                        self.defReq + other.defReq,
+                        self.agiReq + other.agiReq)
+        else:
+            raise ValueError("Types no good for +")
+
+    def __iadd__(self, other: 'ItemIDs'):
+        self.durability += other.durability,
+        self.strReq += other.strReq,
+        self.dexReq += other.dexReq,
+        self.intReq += other.intReq,
+        self.defReq += other.defReq,
+        self.agiReq += other.agiReq
+        return self
+
+    def __mul__(self, number: int | float) -> 'ItemIDs':
+
+        if isinstance(number, int) or isinstance(number, float):
+            return ItemIDs(self.durability, 
+                           self.strReq * number,
+                           self.dexReq * number,
+                           self.intReq * number,
+                           self.defReq * number,
+                           self.agiReq * number)
+        else:
+            raise ValueError("Types no good for *")
+    
+    def __imul__(self, number: int | float):
+        if isinstance(number, int) or isinstance(number, float):
+            self.durability,
+            self.strReq *= number,
+            self.dexReq *= number,
+            self.intReq *= number,
+            self.defReq *= number,
+            self.agiReq *= number
+            return self
+        else:
+            raise ValueError("Types no good for *")
+
+    def floor(self):           
+        return ItemIDs(math.floor(self.durability), 
+                       math.floor(self.strReq),
+                       math.floor(self.dexReq),
+                       math.floor(self.intReq),
+                       math.floor(self.defReq),
+                       math.floor(self.agiReq))
+    
+    def round(self):
+        return ItemIDs(round(self.durability), 
+                       round(self.strReq),
+                       round(self.dexReq),
+                       round(self.intReq),
+                       round(self.defReq),
+                       round(self.agiReq))
 
 @dataclass
 class Damage:
@@ -28,7 +89,7 @@ class Item:
     name: str
     item: EItemType
     itemIDs: ItemIDs
-    lvl: int
+    lvl: Range
     ids: Dict[EID, Range] 
     tier: EItemTier 
     displayName: str
