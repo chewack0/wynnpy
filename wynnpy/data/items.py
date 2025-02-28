@@ -139,6 +139,28 @@ class Item:
             id = data["id"]
         )
     
+    @staticmethod
+    def empty() -> 'Item':
+        return Item(name = "Empty",
+                    item = "Any",
+                    damage = Damage(Range(0, 0), 
+                                    Range(0, 0), 
+                                    Range(0, 0), 
+                                    Range(0, 0), 
+                                    Range(0, 0), 
+                                    Range(0, 0)),
+                    itemIDs = ItemIDs(0, 0, 0, 0, 0, 0),
+                    atkSpd=None,
+                    lvl = 0,
+                    ids = {},
+                    powderSlots=0,
+                    tier = EItemTier.UNIQUE,
+                    displayName = "Empty",
+                    restrict = [],
+                    majorIDs = None,
+                    id = -1
+                    )
+    
             
 
 if __name__ == "__main__":

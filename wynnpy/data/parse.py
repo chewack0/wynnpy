@@ -14,6 +14,7 @@ def parse_items(path: str) -> List[Item]:
             logging.info(f"[{counter}] Parsing item... {item["name"]}  id: {item["id"]}")
             items.append(Item.parse_item(item))
             counter += 1
+        items.append(Item.empty())
     return items
 
 def parse_ingredients(path: str) -> List[Ingredient]:
@@ -25,6 +26,7 @@ def parse_ingredients(path: str) -> List[Ingredient]:
             logging.info(f"[{counter}] Parsing ingredient... {ing["name"]} id: {ing["id"]}")
             ingredients.append(Ingredient.parse_ing(ing))
             counter += 1
+        ingredients.append(Ingredient.empty())
     return ingredients
 
 def parse_recipes(path: str) -> List[Recipe]:
