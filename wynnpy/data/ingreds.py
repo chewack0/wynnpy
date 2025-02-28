@@ -90,12 +90,12 @@ class Ingredient:
 
     @classmethod
     def parse_itemIDs(cls, itemIDs: dict) -> ItemIDs:
-        return ItemIDs(durability = itemIDs["dura"],
-                    strReq = itemIDs["strReq"],
-                    dexReq = itemIDs["dexReq"],
-                    intReq = itemIDs["intReq"],
-                    defReq = itemIDs["defReq"],
-                    agiReq = itemIDs["agiReq"])
+        return ItemIDs(durability = itemIDs.get("dura", 0),
+                    strReq = itemIDs.get("strReq", 0),
+                    dexReq = itemIDs.get("dexReq", 0),
+                    intReq = itemIDs.get("intReq", 0),
+                    defReq = itemIDs.get("defReq", 0),
+                    agiReq = itemIDs.get("agiReq", 0))
 
     def validate_skill(self, skill: ECraftingSkill):
         if skill in self.skills:
