@@ -7,12 +7,12 @@ import math
 
 @dataclass
 class ItemIDs:
-    durability: int
-    strReq: int
-    dexReq: int
-    intReq: int
-    defReq: int
-    agiReq: int
+    durability: int | float
+    strReq: int | float 
+    dexReq: int | float
+    intReq: int | float
+    defReq: int | float
+    agiReq: int | float
 
     def __add__(self, other: 'ItemIDs'):
         if isinstance(other, ItemIDs):
@@ -26,11 +26,11 @@ class ItemIDs:
             raise ValueError("Types no good for +")
 
     def __iadd__(self, other: 'ItemIDs'):
-        self.durability += other.durability,
-        self.strReq += other.strReq,
-        self.dexReq += other.dexReq,
-        self.intReq += other.intReq,
-        self.defReq += other.defReq,
+        self.durability += other.durability
+        self.strReq += other.strReq
+        self.dexReq += other.dexReq
+        self.intReq += other.intReq
+        self.defReq += other.defReq
         self.agiReq += other.agiReq
         return self
 
@@ -48,11 +48,11 @@ class ItemIDs:
     
     def __imul__(self, number: int | float):
         if isinstance(number, int) or isinstance(number, float):
-            self.durability,
-            self.strReq *= number,
-            self.dexReq *= number,
-            self.intReq *= number,
-            self.defReq *= number,
+            self.durability
+            self.strReq *= number
+            self.dexReq *= number
+            self.intReq *= number
+            self.defReq *= number
             self.agiReq *= number
             return self
         else:
