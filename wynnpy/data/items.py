@@ -83,7 +83,6 @@ class Damage:
     fDam: Range
     aDam: Range
 
-@dataclass
 class Item:
     category: EItemCategory
     name: str
@@ -96,6 +95,34 @@ class Item:
     restrict: List[EItemRestrict]
     majorIDs: Optional[str]
     id: int
+
+    def __init__(self, 
+                 category: EItemCategory, 
+                 name: str, 
+                 item: EItemType, 
+                 itemIDs: ItemIDs, 
+                 lvl: Range, 
+                 ids: Dict[EID, Range],
+                 tier: EItemTier,
+                 displayName: str,
+                 restrict: List[EItemRestrict],
+                 majorIDs: Optional[str],
+                 id: int,
+                 *args, **kwargs):
+        self.majorIDs = majorIDs,
+        self.restrict = restrict,
+        self.category = category,
+        self.name = name,
+        self.item = item,
+        self.itemIDs = itemIDs,
+        self.lvl = lvl,
+        self.ids = ids,
+        self.tier = tier,
+        self.displayName = displayName,
+        self.id = id
+
+        
+
 
     def __hash__(self):
         return hash((self.__class__.__name__, self.id))
@@ -118,33 +145,44 @@ class Item:
                     missing_keys.add(key)
         
         return missing_keys
-
-@dataclass    
+  
 class Weapon(Item):
     damage: Damage
     atkSpd: EAttackSpeed
     powderSlots: Optional[int]
 
+    def __init__(self, damage: Damage, atkSpd: EAttackSpeed, powderSlots: Optional[int], *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.damage = damage
+        self.atkSpd = atkSpd
+        self.powderSlots = powderSlots
+
     def __hash__(self):
         return super().__hash__()
 
     def __eq__(self, other):
         return super().__eq__()
 
-@dataclass
 class Armor(Item):
     hp: Range
     powderSlots: Optional[int]
     
+    def __init__(self, hp: Range, powderSlots: Optional[int], *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.hp = hp
+        self.powderSlots = powderSlots
+
     def __hash__(self):
         return super().__hash__()
     
     def __eq__(self, other):
         return super().__eq__()
 
-@dataclass
 class Accessory(Item):
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def __hash__(self):
         return super().__hash__()
     
