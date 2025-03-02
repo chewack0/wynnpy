@@ -97,9 +97,9 @@ class Item:
     id: int
 
     def __init__(self, 
-                 category: EItemCategory, 
-                 name: str, 
-                 item: EItemType, 
+                 category: EItemCategory,
+                 name: str,
+                 item: EItemType,
                  itemIDs: ItemIDs, 
                  lvl: Range, 
                  ids: Dict[EID, Range],
@@ -109,16 +109,16 @@ class Item:
                  majorIDs: Optional[str],
                  id: int,
                  *args, **kwargs):
-        self.majorIDs = majorIDs,
-        self.restrict = restrict,
-        self.category = category,
-        self.name = name,
-        self.item = item,
-        self.itemIDs = itemIDs,
-        self.lvl = lvl,
-        self.ids = ids,
-        self.tier = tier,
-        self.displayName = displayName,
+        self.majorIDs = majorIDs
+        self.restrict = restrict
+        self.category = category
+        self.name = name
+        self.item = item
+        self.itemIDs = itemIDs
+        self.lvl = lvl
+        self.ids = ids
+        self.tier = tier
+        self.displayName = displayName
         self.id = id
 
         
@@ -132,7 +132,7 @@ class Item:
     
     #Move this to utils 
     @classmethod
-    def fing_missing_keys(cls, data: dict):
+    def find_missing_keys(cls, data: dict):
         existing_keys = {id_enum.value for id_enum in EID}
         exclude_keys = {"icon", "lvl", "armourMaterial", "name", "id", "slots", "atkSpd", "tier", "lore", "drop", "majorIds", "nDam", "fDam", "displayName", "restrict", "quest",
                         "allowCraftsman", "agiReq", "aDam", "tDam", "wDam", "dexReq", "eDam", "intReq", "strReq", "type", "classReq", "averageDps", "armourColor", "category",
