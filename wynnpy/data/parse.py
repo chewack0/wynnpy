@@ -149,7 +149,7 @@ class ItemFactory:
 
 def parse_items(path: str) -> List[Item]:
     items = list()
-    with open(path) as data:
+    with open(path, "r", encoding="utf-8") as data:
         data = json.load(data)["items"]
         counter = 1
         for item in data:
@@ -162,7 +162,7 @@ def parse_items(path: str) -> List[Item]:
 
 def parse_ingredients(path: str) -> List[Ingredient]:
     ingredients = list()
-    with open(path) as data:
+    with open(path, "r", encoding="utf-8") as data:
         data = json.load(data)
         counter = 1
         for ing in data:
@@ -174,7 +174,7 @@ def parse_ingredients(path: str) -> List[Ingredient]:
 
 def parse_recipes(path: str) -> List[Recipe]:
     recipes = list()
-    with open(path) as data:
+    with open(path, "r", encoding="utf-8") as data:
         data = json.load(data)
         counter = 1
         for recipe in data["recipes"]:
