@@ -49,11 +49,35 @@ class Range:
             raise ValueError("types no good for *")
         return self
     
+    def __eq__(self, other):
+        if isinstance(other, Range):
+            return self.mean() == other.mean()
+        if isinstance(other, int) or isinstance(other, float):
+            return self.mean() == other
+        return NotImplemented
+    
+    def __gt__(self, other):
+        if isinstance(other, Range):
+            return self.mean() > other.mean()
+        if isinstance(other, int) or isinstance(other, float):
+            return self.min > other
+        return NotImplemented
+
+    def __lt__(self, other):
+        if isinstance(other, Range):
+            return self.mean() < other.mean()
+        if isinstance(other, int) or isinstance(other, float):
+            return self.min < other
+        return NotImplemented
+
     def floor(self):
         return Range(math.floor(self.min), math.floor(self.max))
     
     def contains(self, x: int | float):
         return x >= self.min and x <= self.max
+
+    def mean(self):
+        return (self.min + self.max)/2
 
     def round(self):
         return Range(round(self.min), round(self.max))
