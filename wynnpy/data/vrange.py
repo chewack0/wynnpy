@@ -63,6 +63,9 @@ class Range:
             return self.min > other
         return NotImplemented
 
+    def __int__(self):
+        return math.floor(self.mean())
+
     def __lt__(self, other):
         if isinstance(other, Range):
             return self.mean() < other.mean()
