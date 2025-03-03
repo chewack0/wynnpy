@@ -5,6 +5,8 @@ from .recipes import Recipe
 from abc import ABC, abstractmethod
 import logging
 from wynnpy.utils.fuzzy import fuzzy_match
+from wynnpy.utils.filtering import Filter
+from wynnpy.data.vrange import Range
 
 class DataContainer(ABC):
 
@@ -49,6 +51,19 @@ class ItemsContainer(DataContainer):
     def byName(self, name) -> Item | None:
         return next((item for item in self.objects if item.name == name), None)
     
+    # filter(quantity, "expression0, expression1, expression2 . . .")
+    # expression ~ "attr" / "!attr" / "attr0 ><= attr1" / TODO:"attr0 or attr1 or attr2 ..." / "attr0 xor attr1 ..." 
+    def filter(self, filteringString: str) -> List[Item]:
+        filterable_stats = [{'id':item.id, 
+                             "total_hp_min": item.__dict__.get('hp', Range(0, 0)).min + item.ids.get("hpBonus", Range(0, 0)).min, 
+                             "total_hp_avg": item.__dict__.get('hp', Range(0, 0)).mean() + item.ids.get("hpBonus", Range(0, 0)).mean(), 
+                             "total_hp_max": item.__dict__.get('hp', Range(0, 0)).max + item.ids.get("hpBonus", Range(0, 0)).max}|
+                            {i.value+"_min":item.ids.get(i, 0).min for i in item.ids.keys()}|
+                            {i.value+"_avg":item.ids.get(i, 0).mean() for i in item.ids.keys()}|
+                            {i.value+"_max":item.ids.get(i, 0).max for i in item.ids.keys()} for item in self.objects]
+        #filterable_stats = [{'id':item.id, 'total_hp': item.__dict__.get("hp", 0) + item.ids.get("hp_bonus", 0), **item.ids} for item in self.objects]
+        return [self.byID(item["id"]) for item in Filter(filteringString=filteringString, objects=filterable_stats).test()]
+
     #TODO implement threshold
     def search(self, name: str) -> Item:
         #Fuzzy search by name
