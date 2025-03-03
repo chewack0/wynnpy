@@ -24,7 +24,8 @@ LOGGING_CONFIG = {
     'version': 1,
     'formatters': {
         'default': {
-            'format': '[%(levelname)s] %(message)s'
+            'format': '%(name)s|%(levelname)4s| %(message)s',
+            'datefmt': '%H:%M'
         }
     },
     'handlers': {
