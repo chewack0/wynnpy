@@ -72,6 +72,7 @@ class ItemFactory:
             item = data["type"].upper(),
             itemIDs = cls.parse_itemids(data), 
             lvl = data["lvl"],
+            hp=Range.fromint(data.get("hp", 0)),
             ids = cls.parse_ids(data),
             tier = EItemTier[data["tier"].upper()],
             displayName = data["name"],
