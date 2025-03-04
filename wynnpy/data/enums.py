@@ -100,7 +100,6 @@ class EID(Enum):
     MELEERANGEPERCENT = "mainAttackRange" #The Extinguished
     MAXMANA = "maxMana" #Calming Torc
     CRITDAMAGEBONUSPERCENT = "critDamPct" #Blunt Force
-    HEALTHPOINTS = "hp" #Statue
     MAINATTACKFIREDAMAGE = "mainAttackFireDamage" #Flamiche ???
 
 class EAttackSpeed(Enum):

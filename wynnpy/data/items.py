@@ -179,9 +179,10 @@ class Armor(Item):
         return super().__eq__()
 
 class Accessory(Item):
-    
-    def __init__(self, *args, **kwargs):
+    hp: Range
+    def __init__(self, hp: Range, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.hp = hp
 
     def __hash__(self):
         return super().__hash__()
