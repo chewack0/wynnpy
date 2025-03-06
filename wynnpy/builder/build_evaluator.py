@@ -1,9 +1,39 @@
+import warnings
 from typing import Optional
 
-from wynnpy.data.datacontainer import ItemsContainer, MainDataContainer
 from wynnpy.data.enums import EAttackSpeed, EItemType
 from wynnpy.data.items import ItemIDs, Armor, Accessory, Weapon, Damage
 from wynnpy.data.vrange import Range
+
+def validate_build(*items) -> bool:
+    armor_types = [EItemType.HELMET, EItemType.CHESTPLATE, EItemType.LEGGINGS, EItemType.BOOTS]
+    accessory_types = [EItemType.BRACELET, EItemType.NECKLACE]
+
+    for armor_type in armor_types:
+        armors_of_type = [item for item in items if isinstance(item, Armor) and item.item == armor_type.value]
+        if len(armors_of_type) > 1:
+            warnings.warn(f"Too many {armor_type.value} ! Only the first one added: "
+                          f"{next(item for item in items if isinstance(item, Armor) and item.item == armor_type.value).name}", UserWarning)
+            return False
+
+    for accessory_type in accessory_types:
+        accessories_of_type = [item for item in items if isinstance(item, Accessory) and item.item == accessory_type.value]
+        if len(accessories_of_type) > 1:
+            warnings.warn(f"Too many {accessory_type.value} ! Only the first one added:"
+                          f"{next(item for item in items if isinstance(item, Accessory) and item.item == accessory_type.value).name}", UserWarning)
+            return False
+
+    rings = [item for item in items if isinstance(item, Accessory) and item.item == EItemType.RING.value]
+    if len(rings) > 2:
+        warnings.warn(f"Too many Rings ! Only the first two added: {rings[0].name} , {rings[1].name}", UserWarning)
+        return False
+
+    weapons = [item for item in items if isinstance(item, Weapon)]
+    if len(weapons) > 1:
+        warnings.warn(f"Too many Weapon ! Only the first one added: {next(item for item in items if isinstance(item, Weapon)).name}", UserWarning)
+        return False
+
+    return True
 
 class BuildEvaluator:
 
@@ -26,7 +56,6 @@ class BuildEvaluator:
     necklace: Optional[Accessory]
     weapon: Optional[Weapon]
 
-    #todo dont pass all data container, but just items, replace def createbuild
     def __init__(self, helmet = None, chestplate = None, leggings = None, boots = None,
                  ring1 = None, ring2 = None, bracelet = None, necklace = None, weapon = None):
         self.atkSpd = None
@@ -59,19 +88,21 @@ class BuildEvaluator:
     #IDK which staticmethod should I use tbh
     @staticmethod
     def create_build(*items):
-        rings = [item for item in items if isinstance(item, Accessory) and item.item == EItemType.RING]
-
+        rings = [item for item in items if isinstance(item, Accessory) and item.item == EItemType.RING.value]
         build = BuildEvaluator(
-            helmet = next((item for item in items if isinstance(item, Armor) and item.item == EItemType.HELMET), None),
-            chestplate = next((item for item in items if isinstance(item, Armor) and item.item == EItemType.CHESTPLATE), None),
-            leggings = next((item for item in items if isinstance(item, Armor) and item.item == EItemType.LEGGINGS), None),
-            boots = next((item for item in items if isinstance(item, Armor) and item.item == EItemType.BOOTS), None),
+            helmet = next((item for item in items if isinstance(item, Armor) and item.item == EItemType.HELMET.value), None),
+            chestplate = next((item for item in items if isinstance(item, Armor) and item.item == EItemType.CHESTPLATE.value), None),
+            leggings = next((item for item in items if isinstance(item, Armor) and item.item == EItemType.LEGGINGS.value), None),
+            boots = next((item for item in items if isinstance(item, Armor) and item.item == EItemType.BOOTS.value), None),
             ring1 = rings[0] if len(rings) > 0 else None,
             ring2 = rings[1] if len(rings) > 1 else None,
-            bracelet = next((item for item in items if isinstance(item, Accessory) and item.item == EItemType.BRACELET), None),
-            necklace = next((item for item in items if isinstance(item, Accessory) and item.item == EItemType.NECKLACE), None),
+            bracelet = next((item for item in items if isinstance(item, Accessory) and item.item == EItemType.BRACELET.value), None),
+            necklace = next((item for item in items if isinstance(item, Accessory) and item.item == EItemType.NECKLACE.value), None),
             weapon = next((item for item in items if isinstance(item, Weapon)), None),
         )
+
+        validate_build(*items)
+
         return build
 
     @staticmethod
@@ -85,127 +116,76 @@ class BuildEvaluator:
             elif isinstance(item, Weapon):
                 build.assign_weapon(item)
             else:
-                raise ValueError(f"Unknown item type: {item.name}")
+                warnings.warn(f"Unknown item type: {item.name}")
         return build
 
     def assign_armor(self, item):
         item_type = item.item
 
-        if item_type == EItemType.HELMET:
+        if item_type == EItemType.HELMET.value:
             if not self.helmet:
                 self.helmet = item
             else:
-                raise ValueError(f"Too many: {EItemType.HELMET} , can't add item: {item.name}")
+                warnings.warn(f"Too many: {EItemType.HELMET.value} ! Can't add item: {item.name}", UserWarning)
 
-        elif item_type == EItemType.CHESTPLATE:
+        elif item_type == EItemType.CHESTPLATE.value:
             if not self.chestplate:
                 self.chestplate = item
             else:
-                raise ValueError(f"Too many: {EItemType.CHESTPLATE}, can't add item: {item.name}")
+                warnings.warn(f"Too many: {EItemType.CHESTPLATE.value} ! Can't add item: {item.name}", UserWarning)
 
-        elif item_type == EItemType.LEGGINGS:
+        elif item_type == EItemType.LEGGINGS.value:
             if not self.leggings:
                 self.leggings = item
             else:
-                raise ValueError(f"Too many: {EItemType.LEGGINGS}, can't add item: {item.name}")
+                warnings.warn(f"Too many: {EItemType.LEGGINGS.value} ! Can't add item: {item.name}", UserWarning)
 
-        elif item_type == EItemType.BOOTS:
+        elif item_type == EItemType.BOOTS.value:
             if not self.boots:
                 self.boots = item
             else:
-                raise ValueError(f"Too many: {EItemType.BOOTS}, can't add item: {item.name}")
+                warnings.warn(f"Too many: {EItemType.BOOTS.value} ! Can't add item: {item.name}", UserWarning)
 
         else:
-            raise ValueError(f"Invalid item type: {item_type} in item: {item.name}")
+            warnings.warn(f"Invalid item type: {item_type} , in item: {item.name}", UserWarning)
 
     def assign_accessory(self, item):
         item_type = item.item
 
-        if item_type == EItemType.RING:
+        if item_type == EItemType.RING.value:
             if not self.ring1:
                 self.ring1 = item
             elif not self.ring2:
                 self.ring2 = item
             else:
-                raise ValueError(f"Too many: {EItemType.RING}, can't add item: {item.name}")
+                warnings.warn(f"Too many: {EItemType.RING.value} ! Can't add item: {item.name}", UserWarning)
 
-        elif item_type == EItemType.BRACELET:
+        elif item_type == EItemType.BRACELET.value:
             if not self.bracelet:
                 self.bracelet = item
             else:
-                raise ValueError(f"Too many: {EItemType.BRACELET}, can't add item: {item.name}")
+                warnings.warn(f"Too many: {EItemType.BRACELET.value} ! Can't add item: {item.name}", UserWarning)
 
-        elif item_type == EItemType.NECKLACE:
+        elif item_type == EItemType.NECKLACE.value:
             if not self.necklace:
                 self.necklace = item
             else:
-                raise ValueError(f"Too many: {EItemType.NECKLACE}, can't add item: {item.name}")
+                warnings.warn(f"Too many: {EItemType.NECKLACE.value} ! Can't add item: {item.name}", UserWarning)
 
         else:
-            raise ValueError(f"Invalid item type: {item_type} in item: {item.name}")
+            warnings.warn(f"Invalid item type: {item_type} , in item: {item.name}", UserWarning)
 
     def assign_weapon(self, item):
         if not self.weapon:
             self.weapon = item
         else:
-            raise ValueError(f"Too many weapons, can't add item: {item.name}")
-
-    def validatebuild(self) -> bool:
-        max_items_by_type = {
-            "WAND" : 1,
-            "DAGGER": 1,
-            "RELIK": 1,
-            "BOW": 1,
-            "SPEAR": 1,
-            "HELMET": 1,
-            "CHESTPLATE": 1,
-            "LEGGINGS": 1,
-            "BOOTS": 1,
-            "RING": 2,
-            "BRACELET": 1,
-            "NECKLACE": 1
-        }
-
-        items_by_type = {key: 0 for key in max_items_by_type}
-        weapon_types = set()
-        weapon_count = 0
-
-        for item in self.item_list:
-            item_type = item.item.strip().upper()
-            if item_type in items_by_type:
-                items_by_type[item_type] += 1
-                if items_by_type[item_type] > max_items_by_type[item_type]:
-                    print(f"Too many - {item_type} !")
-                    return False
-            if item_type in ["WAND", "DAGGER", "RELIK", "BOW", "SPEAR"]:
-                weapon_types.add(item_type)
-                weapon_count += 1
-
-        if len(weapon_types) > 1:
-            print("More then 1 type of weapon in build!")
-            return False
-        if weapon_count > 1:
-            print("Too many weapons in the build!")
-            return False
-
-        return True
-
-    #todo remove it
-    def createbuild(self, ids: list[int]):
-
-        for item in ids:
-            self.item_list.append(self.items.byID(item))
+            warnings.warn(f"Too many weapons ! Can't add item: {item.name}", UserWarning)
 
     def calculatebuild(self):
-
-        #todo move validate
-        if not self.validatebuild():
-            return None
-
         min_lvl, max_lvl = 0, 0
 
         #todo make __add__ __iadd__ in damage class or maybe not
-
+        #remake calculate for new fields style
         for item in self.item_list:
             min_lvl = min(min_lvl, item.lvl)
             max_lvl = max(max_lvl, item.lvl)
